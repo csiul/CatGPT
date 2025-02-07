@@ -1,0 +1,227 @@
+* {
+    font-family: 'VT323', monospace !important;
+    font-size: 24px !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7); /* Adjust the alpha value (last value) to control darkness */
+  z-index: -1;
+}
+
+.dialogue-box {
+    width: 60%;
+    height: 200px;
+    border: 1px solid grey;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: black;
+    color: white;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    min-height: 200px;
+}
+
+.dialogue-box > div {
+    margin-top: 0;
+}
+
+.character-name {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.character-dialogue {
+    flex-grow: 1;
+}
+
+.character-image {
+    width: auto;
+    height: calc(100% - 40px);
+    border: 1px solid grey;
+    object-fit: cover;
+    margin-left: 20px;
+}
+
+#catgpt_dialogue-box {
+    margin-top: 20px;
+}
+
+#player_dialogue-box > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    flex-grow: 1;
+    width: 100%;
+    overflow: auto;
+}
+
+form {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+}
+
+#player_dialogue {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    color: white;
+    resize: none;
+}
+
+#player_last_message {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    display: none;
+    color: rgba(207, 151, 54, 0.8);
+}
+
+#player_dialogue:focus {
+    outline: none;
+    background: transparent;
+}
+
+.character-name {
+    color: grey;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100px; /* Adjust as needed */
+    height: 100vh;
+    background-color: black; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid grey; /* Adjust as needed */
+}
+
+.nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px; /* Adjust as needed */
+    margin: 20px 0;
+}
+
+.nav-item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-item:hover {
+    box-shadow: inset 0 0 30px rgba(207, 151, 54, 0.8);
+    /*background-color: rgba(138, 88, 1, 0.6); /* Adjust as needed */
+}
+
+nav img {
+    width: 30px; /* Adjust as needed */
+    height: 30px; /* Adjust as needed */
+    filter: invert(50%); /* This will give a grey color to your SVGs */
+}
+
+#music-player {
+    position: absolute; /* Absolute positioning */
+    bottom: 0; /* Position at the bottom */
+    width: 100%;
+    height: 200px; /* Adjust as needed */
+    background-color: black;
+    opacity: 0.6;
+    margin: 0;
+}
+
+#music-iframe {
+    width: 100%;
+    height: 200px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background: linear-gradient(90deg, grey 50%, white 50%);
+    background-size: 200% 100%;
+    animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+#music-player-toggle {
+    cursor: pointer;  /* Make it clickable */
+}
+
+#prompt-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This will center the code block vertically */
+    flex-grow: 1; /* This will make the container take up the remaining space */
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 100vh;
+}
+
+#prompt {
+    border: 1px solid grey;
+    background-color: black;
+    color: white;
+    overflow-x: auto;
+    overflow-y: auto; /* Add vertical scrolling if necessary */
+    max-height: 90vh; /* Limit the maximum height to the viewport height */
+    box-sizing: border-box;
+    max-width: 60%;
+    padding: 0;
+}
+
+.hljs {
+    overflow-x: visible !important;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 100px; /* Adjust this according to your navbar's width */
+    width: calc(100% - 100px); /* Adjust this too, according to your navbar's width */
+    height: 100%;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+}

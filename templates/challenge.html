@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block body %}
+    <div id="challenge-section" class="section">
+        <div id="catgpt_dialogue-box" class="dialogue-box">
+            <div>
+                <span class="character-name">{{ cat_name }}</span>
+                <div id="catgpt_dialogue" class="character-dialogue"></div>
+            </div>
+            <img class="character-image" src="/static/images/{{ cat_image }}" alt="{{ cat_name }}">
+        </div>
+        <div id="player_dialogue-box" class="dialogue-box">
+            <div style="width:100%">
+                <span class="character-name">Adventurer</span>
+                <div id="player_last_message" class="character-dialogue"></div>
+                <form onsubmit="submitForm(); return false;">
+                    <textarea id="player_dialogue" class="character-dialogue" maxlength="220" onkeydown="if(event.keyCode==13) { event.preventDefault(); submitForm(); }"></textarea>
+                </form>
+            </div>
+            <img class="character-image" src="/static/images/player.png" alt="Adventurer">
+        </div>
+        <script>
+        function submitForm(userInput = document.getElementById("player_dialogue").value) {
+            // Set the last message sent
+            document.getElementById("player_last_message").style.display = "inline-block";
+            document.getElementById("player_last_message").innerText = userInput;
+
+            // Send request to API
+            fetch('{{ api_url }}', {
+                method: 'POST',
+                body: JSON.stringify({user_input: userInput}),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Afficher la réponse de l'API ici sous forme de bulle de conversation
+                typeWriter(data, document.getElementById("catgpt_dialogue"), 60);
+            });
+
+            document.getElementById("player_dialogue").value = "";
+        }
+
+        // Add a typewriter effect to the message
+        function typeWriter(text, element, delay = 60) {
+            element.innerHTML = '';
+            let i = 0;
+            let timer = setInterval(function () {
+                element.innerHTML += text[i];
+                i++;
+                if (i > text.length - 1) {
+                    clearInterval(timer);
+                }
+            }, delay);
+        }
+
+        // Initial message
+        typeWriter("{{ initial_message }}", document.getElementById("catgpt_dialogue"), 60);
+        </script>
+    </div>
+{% endblock %}

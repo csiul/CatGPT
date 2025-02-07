@@ -1,0 +1,14 @@
+{% block head %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tomorrow-night-bright.min.css">
+{% endblock %}
+{% block body %}
+    <div id="prompt-section" class="section">
+        <div id="prompt-container">
+            <pre id="prompt">
+                <code class="language-python hljs">{{ prompt }}</code>
+            </pre>
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </div>
+{% endblock %}

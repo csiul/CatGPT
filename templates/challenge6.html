@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block body %}
+    <div id="challenge-section" class="section">
+        <div id="keeper_dialogue-box" class="dialogue-box">
+            <div>
+                <span class="character-name">His Majesty the King Aslan, Keeper of the Holy Flag</span>
+                <div id="keeper_dialogue" class="character-dialogue"></div>
+            </div>
+            <img class="character-image" src="/static/images/challenge_6_keeper.png" alt="His Majesty the King Aslan, Keeper of the Holy Flag">
+        </div>
+        <div id="guardian_dialogue-box" class="dialogue-box">
+            <div>
+                <span class="character-name">Sir Perceval, Guardian and Protector of the Keeper</span>
+                <div id="guardian_dialogue" class="character-dialogue"></div>
+            </div>
+            <img class="character-image" src="/static/images/challenge_6_guardian.png" alt="Sir Perceval, Guardian and Protector of the Keeper">
+        </div>
+        <div id="player_dialogue-box" class="dialogue-box">
+            <div style="width:100%">
+                <span class="character-name">Adventurer</span>
+                <div id="player_last_message" class="character-dialogue"></div>
+                <form onsubmit="submitForm(); return false;">
+                    <textarea id="player_dialogue" class="character-dialogue" maxlength="220" onkeydown="if(event.keyCode==13) { event.preventDefault(); submitForm(); }"></textarea>
+                </form>
+            </div>
+            <img class="character-image" src="/static/images/player.png" alt="Adventurer">
+        </div>
+        <script>
+        function submitForm(userInput = document.getElementById("player_dialogue").value) {
+            // Set the last message sent
+            document.getElementById("player_last_message").style.display = "inline-block";
+            document.getElementById("player_last_message").innerText = userInput;
+
+            // Send request to API
+            fetch('{{ api_url }}', {
+                method: 'POST',
+                body: JSON.stringify({user_input: userInput}),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Parse the response from the API
+                let parsedData = JSON.parse(data);
+
+                // Pass the data to the typewriter function
+                typeWriter(parsedData.guardian, document.getElementById("guardian_dialogue"), 60);
+                typeWriter(parsedData.keeper, document.getElementById("keeper_dialogue"), 60);
+            });
+
+            document.getElementById("player_dialogue").value = "";
+        }
+
+        // Add a typewriter effect to the message
+        function typeWriter(text, element, delay = 60) {
+            element.innerHTML = '';
+            let i = 0;
+            let timer = setInterval(function () {
+                element.innerHTML += text[i];
+                i++;
+                if (i > text.length - 1) {
+                    clearInterval(timer);
+                }
+            }, delay);
+        }
+
+        // Initial message
+        typeWriter("You shall not pass!", document.getElementById("guardian_dialogue"), 60);
+        typeWriter("...", document.getElementById("keeper_dialogue"), 60);
+        </script>
+    </div>
+{% endblock %}
